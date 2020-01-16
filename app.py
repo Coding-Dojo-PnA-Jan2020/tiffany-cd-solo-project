@@ -37,6 +37,7 @@ email_regex = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
 
 class Users(db.Model):
   user_id = db.Column(db.Integer, primary_key=True)
+  profile_image_link = db.Column(db.String(255))
   first_name = db.Column(db.String(255), nullable=False)
   last_name = db.Column(db.String(255), nullable=False)
   email = db.Column(db.String(255), nullable=False)
@@ -52,6 +53,7 @@ recipe_ingredients_table = db.Table('recipe_ingredients',
 
 class Recipes(db.Model):
   recipe_id = db.Column(db.Integer, primary_key=True)
+  recipe_image_link = db.Column(db.String(255))
   rating = db.Column(db.Integer)
   difficulty = db.Column(db.Integer)
   prep_time_mins = db.Column(db.Integer)
@@ -75,6 +77,7 @@ class Instructions(db.Model):
 
 class Ingredients(db.Model):
   ingredient_id = db.Column(db.Integer)
+  ingredient_image_link = db.Column(db.String(255))
   ingredient = db.Column(db.String(255), nullable=False)
   created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
   updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
@@ -85,66 +88,81 @@ class Ingredients(db.Model):
 # GET
 # ========================
 
+
 # 
 # 
 # INDEX
 @app.route('/')
 def render_registration_login():
-  pass
+  return render_template('registration_login.html')
+
 
 
 # 
 # 
 # DASHBOARD
-
+@app.route('/dashboard')
+def render_dashboard():
+  # Database Query (Read)
+  return render_template('dashboard.html')
 
 
 
 # 
 # 
 # RECIPE BOOK
-
-
-
-
-# 
-# 
-# VIEW/PRINT RECIPE
-
-
+@app.route('recipe-book')
+def render_recipe_book():
+  # Database Query (Read)
+  return render_template('recipe-book.html')
 
 
 # 
 # 
 # MODIFY RECIPE
-
+@app.route('recipe-book')
+def render_modify_recipe():
+  # Database Query (Read)
+  return render_template('modify_recipe.html')
 
 
 
 # 
 # 
 # VIEW/PRINT RECIPE
-
+@app.route('recipe-book')
+def render_view_recipe():
+  # Database Query (Read)
+  return render_template('view_recipe.html')
 
 
 
 # 
 # 
 # DELETE RECIPE
-
-
+@app.route('/delete/<recipe_id>')
+def on_delete():
+  # Database Query (Delete)
+  return redirect('/recipe-book')
 
 # 
 # 
 # MASTER INGREDIENTS LIST
-
+@app.route('/ingredients-list')
+def render_ingredients():
+  # Database Query
+  return render_template('ingredients-list.html')
 
 
 
 # 
 # 
 # ACCOUNT SETTINGS
-
+# Profile
+@app.route('/account-settings')
+def render_account():
+  # Database Query
+  return render_template('account-settings.html')
 
 
 
@@ -152,19 +170,96 @@ def render_registration_login():
 # POST
 # ========================
 
+# 
+# 
+# REGISTRATION
+@app.route('/register', methods=['POST'])
+def on_registration():
+  form_is_valid = True
+
+  # Validation
+  if len(request.form['first_name']) < 1:
+    flash('Please enter your First Name.', 'registration')
+    form_is_valid = False
+  if len(request.form['last_name']) < 1:
+    flash('Please enter your Last Name.', 'registration')
+    form_is_valid = False
+  if len(request.form['registration_email']) < 5:
+    flash('Please enter your Email.', 'registration')
+    form_is_valid = False
+  if not email_regex.match(request.form['registration_email']):
+    flash('Please enter a valid Email.', 'registration')
+    form_is_valid = False
+  if (request.form['registration_password'] == '') or (request.form['confirm_password'] == '')
+    flash('Please enter a Password.', 'registration')
+    form_is_valid = False
+  if request.form['registration_password'] != request.form['confirm_password']:
+    flash('Password must match Confirm Passsword.', 'registration')
+    form_is_valid = False
+
+  #  form_is_valid / Post Data
+  if form_is_valid:
+
+  return redirect('/')
+
+# 
+# 
+# LOGIN
+@app.route('login', methods=['POST'])
+def on_login():
+  # Database Query (Read)
+
+  # Validation
+  form_is_valid = True
+
+  if not email_regex.match(request.form['registration_email']):
+    flash('Please enter a valid Email.', 'registration')
+    form_is_valid = False
+  if len(request.form['registration_email']) < 5:
+    flash('Please enter your Email.', 'registration')
+    form_is_valid = False
+  if len(request.form['login_password']) < 1:
+    flash('Please enter your Psssword.')
+    form_is_valid = False
+
+  # Check bcrypt match
+
+
+  return redirect('/')
 
 # 
 # 
 # MODIFY RECIPE
+@app.route('/modify-recipe', methods='[POST]')
+def on_modify_recipe():
 
+  # Validation
+  form_is_valid = True
+
+  if len(request.form['instruction']) < 1:
+    flash('Please enter at least one Instruction.', 'instruction_fail')
+  # Database Query (Update)
+
+  return redirect('/recipe-book')
 
 
 
 # 
 # 
 # ACCOUNT SETTINGS
+# Profile
+@app.route('/update-profile', method=['POST'])
+def on_update_profile():
+  # Database Query (Update)
 
+  return redirect('/account-settings')
 
+# Login Information
+@app.route('/update-login', method=['POST'])
+def on_update_login():
+  # Database Query (Update)
+
+  return redirect('/account-settings')
 
 
 # ========================
@@ -174,6 +269,10 @@ def render_registration_login():
 # 
 # 
 # SIGN OUT
+@app.route('logout')
+def on_logout():
+  session.clear()
+  return redirect('/')
 
 
 
