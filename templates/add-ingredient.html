@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Welcome!</title>
+    <title>Add Ingredient</title>
   </head>
   <body>
     <!-- CONTAINER -->
     <div class="container">
-      
+
       <!-- NAV/HEADER -->
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
@@ -24,11 +24,11 @@
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
-      <!-- REGISTRATION SUCCESS -->
-      {% with registration_success = get_flashed_messages(category_filter=["registration_success"]) %}
-      {% if registration_success %}
-        {% for message in registration_success %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <!-- ERRORS -->
+      {% with add_ingredient_fail = get_flashed_messages(category_filter=["add_ingredient_fail"]) %}
+        {% if add_ingredient_fail %}
+          {% for message in add_ingredient_fail %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <span>{{ message }}</span>
               <span aria-hidden="true">&times;</span>
             </button>
@@ -36,21 +36,22 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
+      
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
-        <h1>Hello, {{user[0]['first_name']}}!</h1>
-        <img src="" alt="">
-        <h2><a href="/add-recipe">Add Recipe</a></h2>
-        <img src="" alt="">
-        <h2><a href="/recipe-book">Recipe Book</a></h2>
-        <img src="" alt="">
-        <h2><a href="/ingredients-list">Master Ingredients List</a></h2>
-        <p>Grocery lists coming soon!</p>
-
-      <!-- END MAIN CONTENT -->  
+        <h1>Add Ingredient</h1>
+        <form action="/add-new-ingredient" method="post">
+          <div class="form-group">
+            <label for="ingredient">Ingredient</label>
+            <input type="text" class="form-control" id="ingredient" name="ingredient">
+          </div>
+          <button type="submit" class="btn btn-primary">Add</button>
+        </form>
+      <!-- END MAIN CONTENT -->
       </div>
 
     <!-- END CONTAINER -->
     </div>
+
   </body>
 </html>

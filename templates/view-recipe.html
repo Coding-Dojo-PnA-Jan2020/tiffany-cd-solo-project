@@ -15,20 +15,31 @@
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
         <nav class="my-2 my-md-0 mr-md-3">
-          <a class="p-2 text-dark" href="#">Dashboard</a>
-          <a class="p-2 text-dark" href="#">Recipe Book</a>
-          <a class="p-2 text-dark" href="#">Add New Recipe</a>
-          <a class="p-2 text-dark" href="#">Account Settings</a>
+          <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
+          <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
+          <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
+          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
-        <a class="btn btn-outline-primary" href="#">Sign Out</a>
+        <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
         <h1>View Recipe</h1>
-        <h2>Recipe Name</h2>
-        <h3>Method</h3>
-        <h3>Ingredients</h3>
+        {% for recipe in view_recipe %}
+          <a href="/modify-recipe/{{recipe['recipe_id']}}">Update Recipe</a>
+          <a href="/delete/{{recipe['recipe_id']}}">Delete Recipe</a>
+          <h2>Recipe Name: {{recipe.recipe_name}}</h2>
+
+          <h3>Method</h3>
+          {{recipe.step_number}}
+          {{recipe.instruction}}
+          <h3>Ingredients</h3>
+          {{recipe.quantity}}
+          {{recipe.unit_of_measure}}
+          {{recipe.recipe_ingredient}}
+        {% endfor %}
       <!-- END MAIN CONTENT -->
       </div>
 

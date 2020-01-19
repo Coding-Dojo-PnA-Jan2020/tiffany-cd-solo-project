@@ -47,7 +47,7 @@ class Users(db.Model):
 
 recipe_ingredients_table = db.Table('recipe_ingredients',
   db.Column('fk_recipe_id', db.Integer, db.ForeignKey('recipes.recipe_id', ondelete='cascade'), primary_key=True),
-  db.Column('fk_ingredient_id', db.Integer, db.ForeignKey('ingredients.ingredient_id_id', ondelete='cascade'), primary_key=True),
+  db.Column('fk_ingredient_id', db.Integer, db.ForeignKey('ingredients.ingredient_id', ondelete='cascade'), primary_key=True),
   db.Column('quantity', db.Integer, nullable=False),
   db.Column('unit_of_measure', db.String(45), nullable=False),)
 
@@ -62,21 +62,21 @@ class Recipes(db.Model):
   author_source = db.Column(db.String(255))
   created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
   updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
-  fk_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id') nullable=False)
+  fk_user_id = db.Column(db.Integer, db.ForeignKey('users.user_id'), nullable=False)
   user = db.relationship('Users', foreign_keys=[fk_user_id], backref='user_recipes')
   ingredients_in_this_recipe = db.relationship('Ingredients', secondary=recipe_ingredients_table)
 
 class Instructions(db.Model):
-  instruction_id = db.Column(db.Integer)
+  instruction_id = db.Column(db.Integer, primary_key=True)
   step_number = db.Column(db.Integer, nullable=False)
   instruction = db.Column(db.String(1000), nullable=False)
   created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
   updated_at = db.Column(db.DateTime, server_default=func.now(), onupdate=func.now(), nullable=False)
-  fk_recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id') nullable=False)
+  fk_recipe_id = db.Column(db.Integer, db.ForeignKey('recipes.recipe_id'), nullable=False)
   recipe = db.relationship('Recipes', foreign_keys=[fk_recipe_id], backref='recipe_instructions')
 
 class Ingredients(db.Model):
-  ingredient_id = db.Column(db.Integer)
+  ingredient_id = db.Column(db.Integer, primary_key=True)
   ingredient_image_link = db.Column(db.String(255))
   ingredient = db.Column(db.String(255), nullable=False)
   created_at = db.Column(db.DateTime, server_default=func.now(), nullable=False)
@@ -88,13 +88,12 @@ class Ingredients(db.Model):
 # GET
 # ========================
 
-
 # 
 # 
 # INDEX
 @app.route('/')
 def render_registration_login():
-  return render_template('registration_login.html')
+  return render_template('registration-login.html')
 
 
 
@@ -103,15 +102,20 @@ def render_registration_login():
 # DASHBOARD
 @app.route('/dashboard')
 def render_dashboard():
+  # User Session
+  if'user_id' not in session:
+    return redirect('/')
+  
+  all_registered_users = Users.query.all()
   # Database Query (Read)
-  return render_template('dashboard.html')
+  return render_template('dashboard.html', all_registered_users = all_registered_users)
 
 
 
 # 
 # 
 # RECIPE BOOK
-@app.route('recipe-book')
+@app.route('/recipe-book')
 def render_recipe_book():
   # Database Query (Read)
   return render_template('recipe-book.html')
@@ -120,7 +124,7 @@ def render_recipe_book():
 # 
 # 
 # MODIFY RECIPE
-@app.route('recipe-book')
+@app.route('/recipe-book')
 def render_modify_recipe():
   # Database Query (Read)
   return render_template('modify_recipe.html')
@@ -130,7 +134,7 @@ def render_modify_recipe():
 # 
 # 
 # VIEW/PRINT RECIPE
-@app.route('recipe-book')
+@app.route('/recipe-book')
 def render_view_recipe():
   # Database Query (Read)
   return render_template('view_recipe.html')
@@ -179,47 +183,47 @@ def on_registration():
 
   # Validation
   if len(request.form['first_name']) < 1:
-    flash('Please enter your First Name.', 'registration')
+    flash('Please enter your First Name.', 'registration_fail')
     form_is_valid = False
   if len(request.form['last_name']) < 1:
-    flash('Please enter your Last Name.', 'registration')
+    flash('Please enter your Last Name.', 'registration_fail')
     form_is_valid = False
   if len(request.form['registration_email']) < 5:
-    flash('Please enter your Email.', 'registration')
+    flash('Please enter your Email.', 'registration_fail')
     form_is_valid = False
   if not email_regex.match(request.form['registration_email']):
-    flash('Please enter a valid Email.', 'registration')
+    flash('Please enter a valid Email.', 'registration_fail')
     form_is_valid = False
-  if (request.form['registration_password'] == '') or (request.form['confirm_password'] == '')
-    flash('Please enter a Password.', 'registration')
+  if (request.form['registration_password'] < 5):
+    flash('Password must be at least 5 characters.', 'registration_fail')
     form_is_valid = False
   if request.form['registration_password'] != request.form['confirm_password']:
-    flash('Password must match Confirm Passsword.', 'registration')
+    flash('Passwords must match.', 'registration_fail')
     form_is_valid = False
 
   #  form_is_valid / Post Data
   if form_is_valid:
 
-  return redirect('/')
+    return redirect('/')
 
 # 
 # 
 # LOGIN
-@app.route('login', methods=['POST'])
+@app.route('/login', methods=['POST'])
 def on_login():
   # Database Query (Read)
 
   # Validation
   form_is_valid = True
 
-  if not email_regex.match(request.form['registration_email']):
-    flash('Please enter a valid Email.', 'registration')
+  if not email_regex.match(request.form['login_email']):
+    flash('Please enter a valid Email.', 'login_fail')
     form_is_valid = False
-  if len(request.form['registration_email']) < 5:
-    flash('Please enter your Email.', 'registration')
+  if len(request.form['login_email']) < 1:
+    flash('Please enter your Email.', 'login_fail')
     form_is_valid = False
   if len(request.form['login_password']) < 1:
-    flash('Please enter your Psssword.')
+    flash('Please enter your Password.', 'login_fail')
     form_is_valid = False
 
   # Check bcrypt match
@@ -230,7 +234,7 @@ def on_login():
 # 
 # 
 # MODIFY RECIPE
-@app.route('/modify-recipe', methods='[POST]')
+@app.route('/modify-recipe', methods=['POST'])
 def on_modify_recipe():
 
   # Validation
@@ -248,14 +252,14 @@ def on_modify_recipe():
 # 
 # ACCOUNT SETTINGS
 # Profile
-@app.route('/update-profile', method=['POST'])
+@app.route('/update-profile', methods=['POST'])
 def on_update_profile():
   # Database Query (Update)
 
   return redirect('/account-settings')
 
 # Login Information
-@app.route('/update-login', method=['POST'])
+@app.route('/update-login', methods=['POST'])
 def on_update_login():
   # Database Query (Update)
 
@@ -269,7 +273,7 @@ def on_update_login():
 # 
 # 
 # SIGN OUT
-@app.route('logout')
+@app.route('/logout')
 def on_logout():
   session.clear()
   return redirect('/')

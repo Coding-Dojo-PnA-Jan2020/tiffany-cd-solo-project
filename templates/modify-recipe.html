@@ -15,21 +15,53 @@
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
         <nav class="my-2 my-md-0 mr-md-3">
-          <a class="p-2 text-dark" href="#">Dashboard</a>
-          <a class="p-2 text-dark" href="#">Recipe Book</a>
-          <a class="p-2 text-dark" href="#">Add New Recipe</a>
-          <a class="p-2 text-dark" href="#">Account Settings</a>
+          <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
+          <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
+          <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
+          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
-        <a class="btn btn-outline-primary" href="#">Sign Out</a>
+        <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
-        <h1>Modify Recipe</h1>
-        <h2>Recipe Name</h2>
-        <h3>Method<h3>
-        <h3>Ingredients</h3>
-        <button type="submit" class="btn btn-primary">Update</button>
+        <h1>Update Recipe</h1>
+        {% for recipe in modify_recipe %}
+          <form action="/update-recipe/{{recipe.recipe_id}}" method="post">
+            <div class="form-group">
+              <label for="update-recipe-name">Recipe Name</label>
+              <input type="text" class="form-control" id="update-recipe-name" name="update-recipe-name" value="{{recipe.recipe_name}}">
+            </div>
+            <div class="form-group">
+              <label for="update-recipe-description">Recipe Desciption</label>
+              <input type="text" class="form-control" id="update-recipe-description" name="update-recipe-description" value="{{recipe.recipe_description}}">
+            </div>
+            <h3>Method</h3>
+            <div class="form-group">
+              <label for="update-step-number">Step Number</label>
+              <input type="text" class="form-control" id="update-step-number" name="update-step-number" value="{{recipe.step_number}}">
+            </div>
+            <div class="form-group">
+              <label for="update-instruction">Instruction</label>
+              <input type="text" class="form-control" id="update-instruction" name="update-instruction" value="{{recipe.instruction}}">
+            </div>
+            <h3>Ingredients</h3>
+            <div class="form-group">
+              <label for="update-quantity">Quantity</label>
+              <input type="text" class="form-control" id="update-quantity" name="update-quantity" value="{{recipe.quantity}}">
+            </div>
+            <div class="form-group">
+              <label for="update-unit-of-measure">Unit of Measure</label>
+              <input type="text" class="form-control" id="update-unit-of-measure" name="update-unit-of-measure" value="{{recipe.unit_of_measure}}">
+            </div>
+            <div class="form-group">
+              <label for="update-recipe-ingredient">Ingredient</label>
+              <input type="text" class="form-control" id="update-recipe-ingredient" name="update-recipe-ingredient" value="{{recipe.recipe_ingredient}}">
+            </div>
+            <button type="submit" class="btn btn-primary">Update</button>
+          </form>
+        {% endfor %}
       <!-- END MAIN CONTENT -->
       </div>
 

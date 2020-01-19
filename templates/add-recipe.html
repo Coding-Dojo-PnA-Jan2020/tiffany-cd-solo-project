@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Add Recipe</title>
+  </head>
+  <body>
+    <!-- CONTAINER -->
+    <div class="container">
+
+      <!-- NAV/HEADER -->
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+        <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
+        <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
+          <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
+          <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
+          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
+      </div>
+
+      <!-- ERRORS -->
+      {% with add_recipe_fail = get_flashed_messages(category_filter=["add_recipe_fail"]) %}
+        {% if add_recipe_fail %}
+          {% for message in add_recipe_fail %}
+          <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- MAIN CONTENT -->
+      <div class="jumbotron">
+        <h1>Add New Recipe</h1>
+        <form action="/add-new-recipe" method="post">
+          <div class="form-group">
+            <label for="recipe-name">Recipe Name</label>
+            <input type="text" class="form-control" id="recipe-name" name="recipe-name">
+          </div>
+            <div class="form-group">
+              <label for="recipe-description">Recipe Description</label>
+              <input type="text" class="form-control" id="recipe-description" name="recipe-description">
+            </div>
+          <h3>Method</h3>
+          <div class="form-group">
+            <label for="step-number">Step Number</label>
+            <input type="text" class="form-control" id="step-number" name="step-number">
+          </div>
+          <div class="form-group">
+            <label for="instruction">Instruction</label>
+            <input type="text" class="form-control" id="instruction" name="instruction">
+          </div>
+          <h3>Ingredients</h3>
+          <div>
+            <label for="quantity">Quantity</label>
+            <input type="text" class="form-control" id="quantity" name="quantity">
+          </div>
+          <div>
+            <label for="unit-of-measure">Unit of Measure</label>
+            <input type="text" class="form-control" id="unit-of-measure" name="unit-of-measure">
+          </div>
+          <div>
+            <label for="ingredient">Ingredient</label>
+            <input type="text" class="form-control" id="ingredient" name="ingredient">
+          </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+      <!-- END MAIN CONTENT -->
+      </div>
+
+    <!-- END CONTAINER -->
+    </div>
+
+  </body>
+</html>

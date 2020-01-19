@@ -15,20 +15,63 @@
       <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
         <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
         <nav class="my-2 my-md-0 mr-md-3">
-          <a class="p-2 text-dark" href="#">Dashboard</a>
-          <a class="p-2 text-dark" href="#">Recipe Book</a>
-          <a class="p-2 text-dark" href="#">Add New Recipe</a>
-          <a class="p-2 text-dark" href="#">Account Settings</a>
+          <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
+          <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
+          <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
+          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
-        <a class="btn btn-outline-primary" href="#">Sign Out</a>
+        <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
+      
+      <!-- ADD RECIPE SUCCESS -->
+      {% with add_recipe_success = get_flashed_messages(category_filter=["add_recipe_success"]) %}
+      {% if add_recipe_success %}
+        {% for message in add_recipe_success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- UPDATE RECIPE SUCCESS -->
+      {% with update_recipe_success = get_flashed_messages(category_filter=["update_recipe_success"]) %}
+      {% if update_recipe_success %}
+        {% for message in update_recipe_success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      <!-- DELETE RECIPE SUCCESS -->
+      {% with delete_recipe_success = get_flashed_messages(category_filter=["delete_recipe_success"]) %}
+      {% if delete_recipe_success %}
+        {% for message in delete_recipe_success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
 
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
         <h1>All Your Fancy Recipes Listed Here!</h1>
-        <img src="" alt="">
-        <p>Recipe Name</p>
-
+        <!-- <img src="" alt=""> -->
+        <ul>
+          {% for recipe in recipe_book %}
+            <li><a href="/view-recipe/{{recipe['recipe_id']}}">{{recipe.recipe_name}}</a>: {{recipe.recipe_description}}</li>
+          {% endfor %}
+        </ul>
       <!-- END MAIN CONTENT -->
       </div>
       
