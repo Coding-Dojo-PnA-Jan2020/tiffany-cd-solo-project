@@ -1,0 +1,202 @@
+/* GLOBAL */
+
+body {
+  background-color: #F2F2DC;
+
+}
+
+* {
+  font-family: 'Nunito', sans-serif;
+}
+
+
+h1, h2, h3 { 
+  font-family: 'Lora', serif;
+}
+
+h1 { 
+  font-size: 20px;
+  font-weight: bold;
+}
+
+h2 {
+  color: #545928;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+h3 {
+  font-size: 20px;
+}
+
+.logo {
+  margin-right: auto;
+}
+
+.page-container {
+  background-color: white;
+  border-radius: 5px;
+  box-shadow: 0 .5rem .25rem rgba(0,0,0,.075);
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+  padding: 2rem 4rem 2rem;
+}
+
+.page-heading {
+  border-bottom: 1px solid #cccccc;
+  margin-bottom: 3rem;
+  margin-top: 2rem;
+  line-height: 1;
+}
+
+.form-container {
+  width: 320px;
+}
+
+a {
+  color: #65A603;
+}
+
+a:hover {
+  color: #3B7302;
+}
+
+/* MAIN NAV */
+
+.main-navigation a {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.main-navigation a.active {
+  text-decoration: underline;
+}
+
+
+
+/* REGISTRATION */
+.registration-column {
+  border-right: 1px solid #cccccc;
+  margin-right: 10rem;
+  padding-right: 11rem;
+}
+
+
+/* DASHBOARD */
+
+.add-recipe-column, 
+.recipe-book-column, 
+.master-ingredients-column {
+  background-color: #efefef;
+  border-radius: 5px;
+  text-align: center;
+}
+
+.recipe-book-column {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.dashboard-images {
+  height: auto;
+  margin: 2rem 0;
+  width: 250px;
+}
+
+
+/* RECIPE BOOK */
+
+.main-content {
+}
+
+.recipe-list-container {
+  list-style: none inside;
+  padding: 0;
+}
+
+.no-recipes {
+}
+
+.recipe {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 24px;
+}
+
+.recipe-name {
+  margin: 0;
+}
+
+.recipe-description {
+  margin: 0;
+  padding: 0;
+}
+
+
+
+/* VIEW RECIPE */
+
+.view-recipe-sub-label {
+  color: #777777;
+  display: block;
+  font-size: 1rem;
+}
+
+.recipe-details {
+  margin-bottom: 2rem;
+  margin-top: 2rem;
+}
+
+.view-recipe-sub-headings {
+  border-bottom: 1px solid #efefee;
+  margin-bottom: 2rem;
+  margin-top: 3rem;
+  line-height: 1;
+}
+
+/* ACCOUNT SETTINGS */
+
+.login {
+  margin-top: 4rem;
+}
+
+.profile {
+  height: auto;
+  width: auto;
+}
+
+
+
+/* OVERRIDE */
+
+.btn-primary {
+  color: #fff;
+  background-color: #65A603;
+  border-color: #65A603;
+}
+
+.btn-primary:hover, 
+.btn-outline-primary:hover,
+.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
+
+  color: #fff;
+  background-color: #ABD904;
+  border-color: #ABD904;
+}
+
+.btn-outline-primary { 
+  color: #65A603;
+  border-color: #65A603;
+}
+
+
+.alert-dismissible {
+  padding-right: 1rem !important;
+}
+
+.alert {
+  position: relative;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid transparent;
+  border-radius: .25rem;
+}

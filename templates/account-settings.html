@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Lora|Nunito&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recipes.css') }}">
     <title>Account Settings</title>
   </head>
   <body>
@@ -12,23 +14,23 @@
     <div class="container">
 
       <!-- NAV/HEADER -->
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3">
+        <h1 class="logo">Awesome Recipe App</h1>
+        <nav class="main-navigation">
           <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
           <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
           <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
           <a class="p-2 text-dark" href="/add-master-ingredient">Add New Ingredient</a>
-          <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
+          <a class="p-2 text-dark active" href="/account-settings">Account Settings</a>
         </nav>
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
+    </div>
 
+    <div class="container page-container">
       <!-- MAIN CONTENT -->
-      <div class="jumbotron">
-
-        <h1>Account Settings</h1>
-
+      <div class="main-content">
+        <h2 class="page-heading">Account Settings</h2>
         <!-- UPDATE PROFILE SUCCESS -->
         {% with update_profile_success = get_flashed_messages(category_filter=["update_profile_success"]) %}
         {% if update_profile_success %}
@@ -54,22 +56,6 @@
             {% endfor %}
           {% endif %}
         {% endwith %}
-
-        <!-- UPDATE PROFILE FORM -->
-        <h2>Profile</h2>
-          <img src="" alt="">
-          <form action="/update-profile" method="post">
-            <div class="form-group">
-              <label for="update-first-name">First Name</label>
-              <input type="text" class="form-control" id="update-first-name" name="update-first-name" value="{{user_info.first_name}}">
-            </div>
-            <div class="form-group">
-              <label for="update-last-name">Last Name</label>
-              <input type="text" class="form-control" id="update-last-name" name="update-last-name" value="{{user_info.last_name}}">
-            </div>
-            <div>
-            <button type="submit" class="btn btn-primary">Update</button>
-          </form>
 
         <!-- UPDATE PASSWORD SUCCESS -->
         {% with update_login_success = get_flashed_messages(category_filter=["update_login_success"]) %}
@@ -97,22 +83,45 @@
           {% endif %}
         {% endwith %}
 
-        <!-- UPDATE PASSWORD FORM -->
-        <h2>Update Password</h2>
-        <form action="/update-login" method="post">
-          <div class="form-group">
-            <label for="update-password">New Password</label>
-            <input type="password" class="form-control" id="update-password" name="update-password">
-          </div>
-          <div class="form-group">
-            <label for="confirm-update-password">Confirm Password</label>
-            <input type="password" class="form-control" id="confirm-update-password" name="confirm-update-password">
-          </div>
-          <button type="submit" class="btn btn-primary">Update</button>
-        </form>
+        <div class="row">
+          <!-- UPDATE PROFILE FORM -->
+          <div class="col">
+            <h3>Update Profile</h3>
+            <form class="form-container" action="/update-profile" method="post">
+              <div class="form-group">
+                <label for="update-first-name">First Name</label>
+                <input type="text" class="form-control" id="update-first-name" name="update-first-name" value="{{user_info.first_name}}">
+              </div>
+              <div class="form-group">
+                <label for="update-last-name">Last Name</label>
+                <input type="text" class="form-control" id="update-last-name" name="update-last-name" value="{{user_info.last_name}}">
+              </div>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
 
-      <!-- <h2>Preferences</h2> Backlog-->
+          <!-- UPDATE PASSWORD FORM -->
+            <h3 class="login">Update Password</h3>
+            <form class="form-container" action="/update-login" method="post">
+              <div class="form-group">
+                <label for="update-password">New Password</label>
+                <input type="password" class="form-control" id="update-password" name="update-password">
+              </div>
+              <div class="form-group">
+                <label for="confirm-update-password">Confirm Password</label>
+                <input type="password" class="form-control" id="confirm-update-password" name="confirm-update-password">
+              </div>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+          </div>
 
+          <!-- PROFILE IMAGE -->
+          <div class="col">
+            <img class="profile" src="{{ url_for('static', filename='img/food-placeholder.png') }}" alt="It's me!">
+          </div>
+
+          <!-- <h2>Preferences</h2> Backlog-->
+
+        </div>
       <!-- END MAIN CONTENT -->
       </div>
 

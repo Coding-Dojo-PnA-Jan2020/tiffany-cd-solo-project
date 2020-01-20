@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Lora|Nunito&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/recipes.css') }}">
     <title>View Recipe</title>
   </head>
   <body>
@@ -12,9 +14,9 @@
     <div class="container">
 
       <!-- NAV/HEADER -->
-      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <h5 class="my-0 mr-md-auto font-weight-normal">Awesome Recipe App</h5>
-        <nav class="my-2 my-md-0 mr-md-3">
+      <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3">
+        <h1 class="logo">Awesome Recipe App</h1>
+        <nav class="main-navigation">
           <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
           <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
           <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
@@ -23,7 +25,9 @@
         </nav>
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
+    </div>
 
+    <div class="container page-container">
       <!-- ADD RECIPE SUCCESS -->
       {% with add_recipe_success = get_flashed_messages(category_filter=["add_recipe_success"]) %}
       {% if add_recipe_success %}
@@ -38,32 +42,38 @@
       {% endwith %}
 
       <!-- MAIN CONTENT -->
-      <div class="jumbotron">
-        <a href="/delete/{{view_recipe.recipe_id}}">Delete Recipe</a>
+      <div class="main-content">
+        <a class="float-right" href="/delete/{{view_recipe.recipe_id}}">Delete Recipe</a>
 
         <!-- RECIPE -->
-        <h1>Recipe Name: {{view_recipe.recipe_name}}</h1>
-        <h2>Description: {{view_recipe.recipe_description}}</h2>
-        <ul>
-          <li>Rating: {{view_recipe.rating}}</li>
-          <li>Difficulty: {{view_recipe.difficulty}}</li>
-          <li>Prep Time: {{view_recipe.prep_time}}</li>
-          <li>Cook Time: {{view_recipe.cook_time}}</li>
-          <li>Source: {{view_recipe.author_source}}</li>
-        </ul>
+        <h2 class="page-heading">Recipe Name: {{view_recipe.recipe_name}}</h2>
+        <h3><span class="view-recipe-sub-label">Description:</span> {{view_recipe.recipe_description}}</h3>
+        <div class="row recipe-details">
+          <div class="col"><span class="view-recipe-sub-label">Rating:</span> {{view_recipe.rating}}</div>
+          <div class="col"><span class="view-recipe-sub-label">Difficulty:</span> {{view_recipe.difficulty}}</div>
+          <div class="col"><span class="view-recipe-sub-label">Prep Time</span>: {{view_recipe.prep_time}}</div>
+          <div class="col"><span class="view-recipe-sub-label">Cook Time:</span> {{view_recipe.cook_time}}</div>
+        </div>
+        <div class="row recipe-details">
+          <div class="col"><span class="view-recipe-sub-label">Source:</span> {{view_recipe.author_source}}</div>
+        </div>
   
-        <h2>Ingredients</h2>
+        <h3 class="view-recipe-sub-headings">Ingredients</h3>
+        <ul>
         {% for ingredient in view_ingredients %}
-          {{ingredient.quantity}}
+          <li>{{ingredient.quantity}}
           {{ingredient.unit_of_measure}}
           {{ingredient.recipe_ingredient}}
+          </li>
         {% endfor %}
-
-        <h2>Directions</h2>
+        </ul>
+        <h3 class="view-recipe-sub-headings">Directions</h3>
+        <ol>
         {% for instruction in view_directions %}
-          {{instruction.step_number}}
-          {{instruction.instruction}}
+          <!-- {{instruction.step_number}} -->
+          <li>{{instruction.instruction}}</li>
         {% endfor %}
+        </ol>
 
           <!-- ADD INGREDIENTS FAILURE -->
           {% with add_ingredient_fail = get_flashed_messages(category_filter=["add_ingredient_fail"]) %}
@@ -78,28 +88,6 @@
             {% endif %}
           {% endwith %}
 
-        <!-- ADD INGREDIENTS -->
-        <h3>Add Ingredients</h3>
-        <form action="/add-ingredient/{{view_recipe.recipe_id}}" method="post">
-          <div class="form-group">
-            <label for="order-of-use">Order of Use</label>
-            <input type="text" class="form-control" id="order-of-use" name="order-of-use">
-          </div>
-          <div class="form-group">
-            <label for="quantity">Quantity</label>
-            <input type="text" class="form-control" id="quantity" name="quantity">
-          </div>
-          <div class="form-group">
-            <label for="unit-of-measure">Unit of Measure</label>
-            <input type="text" class="form-control" id="unit-of-measure" name="unit-of-measure">
-          </div>
-          <div class="form-group">
-            <label for="recipe-ingredient">Ingredient</label>
-            <input type="text" class="form-control" id="recipe-ingredient" name="recipe-ingredient">
-          </div>
-          <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-
           <!-- ADD DIRECTIONS FAILURE -->
           {% with add_instruction_fail = get_flashed_messages(category_filter=["add_instruction_fail"]) %}
             {% if add_instruction_fail %}
@@ -113,20 +101,46 @@
             {% endif %}
           {% endwith %}
 
-        <!-- ADD DIRECTIONS -->
-        <h3>Add a Step to Directions</h3>
-        <form action="/add-instruction/{{view_recipe.recipe_id}}" method="post">
-          <div class="form-group">
-            <label for="step-number">Step Number</label>
-            <input type="text" class="form-control" id="step-number" name="step-number">
+        <div class="row">
+          <!-- ADD INGREDIENTS -->
+          <div class="col">
+            <h3 class="view-recipe-sub-headings">Add Ingredients</h3>
+            <form class="form-container" action="/add-ingredient/{{view_recipe.recipe_id}}" method="post">
+              <div class="form-group">
+                <label for="order-of-use">Order of Use</label>
+                <input type="text" class="form-control" id="order-of-use" name="order-of-use">
+              </div>
+              <div class="form-group">
+                <label for="quantity">Quantity</label>
+                <input type="text" class="form-control" id="quantity" name="quantity">
+              </div>
+              <div class="form-group">
+                <label for="unit-of-measure">Unit of Measure</label>
+                <input type="text" class="form-control" id="unit-of-measure" name="unit-of-measure">
+              </div>
+              <div class="form-group">
+                <label for="recipe-ingredient">Ingredient</label>
+                <input type="text" class="form-control" id="recipe-ingredient" name="recipe-ingredient">
+              </div>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
           </div>
-          <div class="form-group">
-            <label for="instruction">Instruction</label>
-            <input type="text" class="form-control" id="instruction" name="instruction">
+          <div class="col">
+            <!-- ADD DIRECTIONS -->
+            <h3 class="view-recipe-sub-headings">Add a Step to Directions</h3>
+            <form class="form-container" action="/add-instruction/{{view_recipe.recipe_id}}" method="post">
+              <div class="form-group">
+                <label for="step-number">Step Number</label>
+                <input type="text" class="form-control" id="step-number" name="step-number">
+              </div>
+              <div class="form-group">
+                <label for="instruction">Instruction</label>
+                <input type="text" class="form-control" id="instruction" name="instruction">
+              </div>
+              <button type="submit" class="btn btn-primary">Update</button>
+            </form>
           </div>
-          <button type="submit" class="btn btn-primary">Update</button>
-        </form>
-        
+        </div>
       <!-- END MAIN CONTENT -->
       </div>
 
