@@ -18,13 +18,28 @@
           <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
           <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
           <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
-          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/add-master-ingredient">Add New Ingredient</a>
           <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
       <!-- MAIN CONTENT -->
+
+      {% for recipe in view_recipe %}
+      <a href="/modify-recipe/{{recipe['recipe_id']}}">Update Recipe</a>
+      <a href="/delete/{{recipe['recipe_id']}}">Delete Recipe</a>
+      <h2>Recipe Name: {{recipe.recipe_name}}</h2>
+
+      <h3>Method</h3>
+      {{recipe.step_number}}
+      {{recipe.instruction}}
+      <h3>Ingredients</h3>
+      {{recipe.quantity}}
+      {{recipe.unit_of_measure}}
+      {{recipe.recipe_ingredient}}
+    {% endfor %}
+    
       <div class="jumbotron">
         <h1>Update Recipe</h1>
         {% for recipe in modify_recipe %}
@@ -37,14 +52,16 @@
               <label for="update-recipe-description">Recipe Desciption</label>
               <input type="text" class="form-control" id="update-recipe-description" name="update-recipe-description" value="{{recipe.recipe_description}}">
             </div>
-            <h3>Method</h3>
-            <div class="form-group">
-              <label for="update-step-number">Step Number</label>
-              <input type="text" class="form-control" id="update-step-number" name="update-step-number" value="{{recipe.step_number}}">
-            </div>
-            <div class="form-group">
-              <label for="update-instruction">Instruction</label>
-              <input type="text" class="form-control" id="update-instruction" name="update-instruction" value="{{recipe.instruction}}">
+            <div class="cooking-instructions">
+              <h3>Method</h3>
+              <div class="form-group">
+                <label for="update-step-number">Step Number</label>
+                <input type="text" class="form-control" id="update-step-number" name="update-step-number" value="{{recipe.step_number}}">
+              </div>
+              <div class="form-group">
+                <label for="update-instruction">Instruction</label>
+                <input type="text" class="form-control" id="update-instruction" name="update-instruction" value="{{recipe.instruction}}">
+              </div>
             </div>
             <h3>Ingredients</h3>
             <div class="form-group">
@@ -62,11 +79,15 @@
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
         {% endfor %}
+
+        <button class="btn btn-primary add-new-step">New</button>
       <!-- END MAIN CONTENT -->
       </div>
 
     <!-- END CONTAINER -->
     </div>
 
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/recipes_script.js') }}"></script>
   </body>
 </html>

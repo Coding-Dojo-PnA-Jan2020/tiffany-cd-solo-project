@@ -18,53 +18,44 @@
           <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
           <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
           <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
-          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/add-master-ingredient">Add New Ingredient</a>
           <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
-      <!-- SUCCESS -->
-      {% with update_profile_success = get_flashed_messages(category_filter=["update_profile_success"]) %}
-      {% if update_profile_success %}
-        {% for message in update_profile_success %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <span>{{ message }}</span>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-
-      {% with update_login_success = get_flashed_messages(category_filter=["update_login_success"]) %}
-      {% if update_login_success %}
-        {% for message in update_login_success %}
-        <div class="alert alert-success alert-dismissible fade show" role="alert">
-            <span>{{ message }}</span>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-
-      <!-- ERRORS -->
-      {% with update_login_fail = get_flashed_messages(category_filter=["update_login_fail"]) %}
-        {% if update_login_fail %}
-          {% for message in update_login_fail %}
-          <div class="alert alert-danger alert-dismissible fade show" role="alert">
-            <span>{{ message }}</span>
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          {% endfor %}
-        {% endif %}
-      {% endwith %}
-
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
+
         <h1>Account Settings</h1>
+
+        <!-- UPDATE PROFILE SUCCESS -->
+        {% with update_profile_success = get_flashed_messages(category_filter=["update_profile_success"]) %}
+        {% if update_profile_success %}
+          {% for message in update_profile_success %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span>{{ message }}</span>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- UPDATE PROFILE FAILURE -->
+        {% with update_profile_fail = get_flashed_messages(category_filter=["update_profile_fail"]) %}
+          {% if update_profile_fail %}
+            {% for message in update_profile_fail %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <span>{{ message }}</span>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- UPDATE PROFILE FORM -->
         <h2>Profile</h2>
           <img src="" alt="">
           <form action="/update-profile" method="post">
@@ -79,7 +70,35 @@
             <div>
             <button type="submit" class="btn btn-primary">Update</button>
           </form>
-        <h2>Login Information</h2>
+
+        <!-- UPDATE PASSWORD SUCCESS -->
+        {% with update_login_success = get_flashed_messages(category_filter=["update_login_success"]) %}
+        {% if update_login_success %}
+          {% for message in update_login_success %}
+          <div class="alert alert-success alert-dismissible fade show" role="alert">
+              <span>{{ message }}</span>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- UPDATE PASSWORD FAILURE -->
+        {% with update_login_fail = get_flashed_messages(category_filter=["update_login_fail"]) %}
+          {% if update_login_fail %}
+            {% for message in update_login_fail %}
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+              <span>{{ message }}</span>
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <!-- UPDATE PASSWORD FORM -->
+        <h2>Update Password</h2>
         <form action="/update-login" method="post">
           <div class="form-group">
             <label for="update-password">New Password</label>
@@ -91,6 +110,7 @@
           </div>
           <button type="submit" class="btn btn-primary">Update</button>
         </form>
+
       <!-- <h2>Preferences</h2> Backlog-->
 
       <!-- END MAIN CONTENT -->

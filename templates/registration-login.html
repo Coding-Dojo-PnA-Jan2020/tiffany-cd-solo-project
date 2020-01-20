@@ -19,7 +19,7 @@
           <div class="col-5 jumbotron">
             <h2>Registration</h2>
             
-            <!-- ERRORS -->
+            <!-- REGISTRATION FAILURE -->
             {% with registration_fail = get_flashed_messages(category_filter=["registration_fail"]) %}
               {% if registration_fail %}
                 {% for message in registration_fail %}
@@ -31,6 +31,7 @@
                 {% endfor %}
               {% endif %}
             {% endwith %}
+
             <!-- REGISTRATION FORM -->
             <form action="/register" method="post">
               <div class="form-group">
@@ -62,7 +63,7 @@
           <div class="col-5 offset-2 jumbotron">
             <h2>Login</h2>
 
-            <!-- ERRORS -->
+            <!-- LOGIN FAILURE -->
             {% with login_fail = get_flashed_messages(category_filter=["login_fail"]) %}
               {% if login_fail %}
                 {% for message in login_fail %}
@@ -74,6 +75,7 @@
                 {% endfor %}
               {% endif %}
             {% endwith %}
+
             <!-- LOGIN FORM -->
             <form action="/login" method="post">
               <div class="form-group">

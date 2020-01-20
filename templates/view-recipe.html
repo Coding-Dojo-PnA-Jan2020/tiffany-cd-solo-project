@@ -18,33 +18,122 @@
           <a class="p-2 text-dark" href="/dashboard">Dashboard</a>
           <a class="p-2 text-dark" href="/recipe-book">Recipe Book</a>
           <a class="p-2 text-dark" href="/add-recipe">Add New Recipe</a>
-          <a class="p-2 text-dark" href="/add-ingredient">Add New Ingredient</a>
+          <a class="p-2 text-dark" href="/add-master-ingredient">Add New Ingredient</a>
           <a class="p-2 text-dark" href="/account-settings">Account Settings</a>
         </nav>
         <a class="btn btn-outline-primary" href="/logout">Sign Out</a>
       </div>
 
+      <!-- ADD RECIPE SUCCESS -->
+      {% with add_recipe_success = get_flashed_messages(category_filter=["add_recipe_success"]) %}
+      {% if add_recipe_success %}
+        {% for message in add_recipe_success %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <span>{{ message }}</span>
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
       <!-- MAIN CONTENT -->
       <div class="jumbotron">
-        <h1>View Recipe</h1>
-        {% for recipe in view_recipe %}
-          <a href="/modify-recipe/{{recipe['recipe_id']}}">Update Recipe</a>
-          <a href="/delete/{{recipe['recipe_id']}}">Delete Recipe</a>
-          <h2>Recipe Name: {{recipe.recipe_name}}</h2>
+        <a href="/delete/{{view_recipe.recipe_id}}">Delete Recipe</a>
 
-          <h3>Method</h3>
-          {{recipe.step_number}}
-          {{recipe.instruction}}
-          <h3>Ingredients</h3>
-          {{recipe.quantity}}
-          {{recipe.unit_of_measure}}
-          {{recipe.recipe_ingredient}}
+        <!-- RECIPE -->
+        <h1>Recipe Name: {{view_recipe.recipe_name}}</h1>
+        <h2>Description: {{view_recipe.recipe_description}}</h2>
+        <ul>
+          <li>Rating: {{view_recipe.rating}}</li>
+          <li>Difficulty: {{view_recipe.difficulty}}</li>
+          <li>Prep Time: {{view_recipe.prep_time}}</li>
+          <li>Cook Time: {{view_recipe.cook_time}}</li>
+          <li>Source: {{view_recipe.author_source}}</li>
+        </ul>
+  
+        <h2>Ingredients</h2>
+        {% for ingredient in view_ingredients %}
+          {{ingredient.quantity}}
+          {{ingredient.unit_of_measure}}
+          {{ingredient.recipe_ingredient}}
         {% endfor %}
+
+        <h2>Directions</h2>
+        {% for instruction in view_directions %}
+          {{instruction.step_number}}
+          {{instruction.instruction}}
+        {% endfor %}
+
+          <!-- ADD INGREDIENTS FAILURE -->
+          {% with add_ingredient_fail = get_flashed_messages(category_filter=["add_ingredient_fail"]) %}
+            {% if add_ingredient_fail %}
+              {% for message in add_ingredient_fail %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+        <!-- ADD INGREDIENTS -->
+        <h3>Add Ingredients</h3>
+        <form action="/add-ingredient/{{view_recipe.recipe_id}}" method="post">
+          <div class="form-group">
+            <label for="order-of-use">Order of Use</label>
+            <input type="text" class="form-control" id="order-of-use" name="order-of-use">
+          </div>
+          <div class="form-group">
+            <label for="quantity">Quantity</label>
+            <input type="text" class="form-control" id="quantity" name="quantity">
+          </div>
+          <div class="form-group">
+            <label for="unit-of-measure">Unit of Measure</label>
+            <input type="text" class="form-control" id="unit-of-measure" name="unit-of-measure">
+          </div>
+          <div class="form-group">
+            <label for="recipe-ingredient">Ingredient</label>
+            <input type="text" class="form-control" id="recipe-ingredient" name="recipe-ingredient">
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+
+          <!-- ADD DIRECTIONS FAILURE -->
+          {% with add_instruction_fail = get_flashed_messages(category_filter=["add_instruction_fail"]) %}
+            {% if add_instruction_fail %}
+              {% for message in add_instruction_fail %}
+              <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <span>{{ message }}</span>
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              {% endfor %}
+            {% endif %}
+          {% endwith %}
+
+        <!-- ADD DIRECTIONS -->
+        <h3>Add a Step to Directions</h3>
+        <form action="/add-instruction/{{view_recipe.recipe_id}}" method="post">
+          <div class="form-group">
+            <label for="step-number">Step Number</label>
+            <input type="text" class="form-control" id="step-number" name="step-number">
+          </div>
+          <div class="form-group">
+            <label for="instruction">Instruction</label>
+            <input type="text" class="form-control" id="instruction" name="instruction">
+          </div>
+          <button type="submit" class="btn btn-primary">Update</button>
+        </form>
+        
       <!-- END MAIN CONTENT -->
       </div>
 
     <!-- END CONTAINER -->
     </div>
 
+    <!-- Scripts -->
+    <script src="{{ url_for('static', filename='js/recipes_script.js') }}"></script>
   </body>
 </html>
