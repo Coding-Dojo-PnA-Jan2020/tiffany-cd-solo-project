@@ -69,8 +69,11 @@ def render_recipe_book():
 
   # Recipe List
   mysql = connectToMySQL(database)
-  query = 'SELECT * FROM recipes ORDER BY recipe_name;'
-  recipe_list = mysql.query_db(query)
+  query = 'SELECT * FROM recipes WHERE fk_user_id = %(fk_user_id)s ORDER BY recipe_name;'
+  data = {
+    'fk_user_id': session['user_id']
+  }
+  recipe_list = mysql.query_db(query, data)
 
   return render_template('recipe-book.html', recipe_book = recipe_list)
 
@@ -376,8 +379,11 @@ def on_add_instruction(recipe_id):
   # Validation
   form_is_valid = True
 
+  if len(request.form['step-number']) < 1:
+    flash('Step Number cannot be blank.', 'add_instruction_fail')
+    form_is_valid = False
   if len(request.form['instruction']) < 1:
-    flash('Please enter your Instruction.', 'add_instruction_fail')
+    flash('Instruction cannot be blank.', 'add_instruction_fail')
     form_is_valid = False
 
   #  form_is_valid / Instruction INSERT Query
@@ -449,7 +455,8 @@ def on_add_to_master_ingredients():
   form_is_valid = True
 
   if len(request.form['ingredient']) < 1:
-    flash('Please enter the ingredient.', 'add_ingredient_fail')
+    flash('Please enter the ingredient.', 'add_master_ingredient_fail')
+    form_is_valid = False
 
   #  form_is_valid
   if form_is_valid:

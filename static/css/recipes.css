@@ -175,19 +175,20 @@ a:hover {
 }
 
 .btn-primary:hover, 
+.btn-primary:active, 
 .btn-outline-primary:hover,
-.btn-outline-primary:not(:disabled):not(.disabled).active, .btn-outline-primary:not(:disabled):not(.disabled):active, .show>.btn-outline-primary.dropdown-toggle {
-
+.btn-primary:not(:disabled):not(.disabled).active, 
+.btn-outline-primary:not(:disabled):not(.disabled):active, 
+.show>.btn-outline-primary.dropdown-toggle {
   color: #fff;
-  background-color: #ABD904;
-  border-color: #ABD904;
+  background-color: #ABD904 !important;
+  border-color: #ABD904 !important;
 }
 
 .btn-outline-primary { 
   color: #65A603;
   border-color: #65A603;
 }
-
 
 .alert-dismissible {
   padding-right: 1rem !important;

@@ -29,9 +29,9 @@
 
     <div class="container page-container">
       <!-- INGREDIENT ADD SUCCESS -->
-      {% with add_ingredient_success = get_flashed_messages(category_filter=["add_ingredient_success"]) %}
-      {% if add_ingredient_success %}
-        {% for message in add_ingredient_success %}
+      {% with add_master_ingredient_success = get_flashed_messages(category_filter=["add_master_ingredient_success"]) %}
+      {% if add_master_ingredient_success %}
+        {% for message in add_master_ingredient_success %}
         <div class="alert alert-success alert-dismissible fade show" role="alert">
             <span>{{ message }}</span>
               <span aria-hidden="true">&times;</span>
@@ -42,6 +42,7 @@
       {% endwith %}
       <!-- MAIN CONTENT -->
       <div class="main-content">
+        <a class="float-right" href="/add-master-ingredient">Add Ingredient</a>
         <h2 class="page-heading">All My Fancy Ingredients!</h2>
         <ul>
         {% for ingredient in ingredients_list %}

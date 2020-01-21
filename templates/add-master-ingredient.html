@@ -29,9 +29,9 @@
 
     <div class="container page-container">
       <!-- ERRORS -->
-      {% with add_ingredient_fail = get_flashed_messages(category_filter=["add_ingredient_fail"]) %}
-        {% if add_ingredient_fail %}
-          {% for message in add_ingredient_fail %}
+      {% with add_master_ingredient_fail = get_flashed_messages(category_filter=["add_master_ingredient_fail"]) %}
+        {% if add_master_ingredient_fail %}
+          {% for message in add_master_ingredient_fail %}
           <div class="alert alert-danger alert-dismissible fade show" role="alert">
             <span>{{ message }}</span>
               <span aria-hidden="true">&times;</span>
@@ -44,7 +44,7 @@
       <!-- MAIN CONTENT -->
       <div class="main-content">
         <h2 class="page-heading">Add Ingredient</h2>
-        <form class="form-container" action="/add-new-ingredient" method="post">
+        <form class="form-container" action="/add-to-master-ingredients" method="post">
           <div class="form-group">
             <label for="ingredient">Ingredient</label>
             <input type="text" class="form-control" id="ingredient" name="ingredient">

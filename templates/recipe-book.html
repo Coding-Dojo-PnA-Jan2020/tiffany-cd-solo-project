@@ -40,15 +40,15 @@
           {% endfor %}
         {% endif %}
       {% endwith %}
-      
+
       <!-- MAIN CONTENT -->
       <div class="main-content">
+        <a class="float-right" href="/add-recipe">Add Recipe</a>
         <h2 class="page-heading">All Your Fancy Recipes Listed Here!</h2>
         <!-- <img src="" alt=""> -->
-        {% if recipe_book[0].fk_user_id == session['user_id']%}
         <ul class="recipe-list-container">
           {% if not recipe_book %}
-            <li class="no-recipes">You currently do not have any recipes.</li>
+            <p>You don't have any recipes yet.</p>
           {% endif %}
           {% for recipe in recipe_book %}
             <li class="recipe">
@@ -57,7 +57,6 @@
             </li>
           {% endfor %}
         </ul>
-        {% endif %}
       <!-- END MAIN CONTENT -->
       </div>
       
